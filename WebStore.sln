@@ -15,11 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.DAL", "Services\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore", "UI\WebStore\WebStore.csproj", "{AF7F878E-8DB5-4A9F-8CDE-C4D0D639A7A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.ServiceHosting", "Services\WebStore.ServiceHosting\WebStore.ServiceHosting.csproj", "{5046EEE4-4398-442A-AE0B-6C3CFF0D17C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.ServiceHosting", "Services\WebStore.ServiceHosting\WebStore.ServiceHosting.csproj", "{5046EEE4-4398-442A-AE0B-6C3CFF0D17C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.Interfaces", "Services\WebStore.Interfaces\WebStore.Interfaces.csproj", "{402B1BF7-8314-4F42-BE73-B3E491FA04EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Interfaces", "Services\WebStore.Interfaces\WebStore.Interfaces.csproj", "{402B1BF7-8314-4F42-BE73-B3E491FA04EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Services", "Services\WebStore.Services\WebStore.Services.csproj", "{D4F85D60-EC98-40E9-A868-3D9604610DEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.Clients", "Services\WebStore.Clients\WebStore.Clients.csproj", "{37C49D5D-094B-4F8A-AC98-F6478819D20B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{D4F85D60-EC98-40E9-A868-3D9604610DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4F85D60-EC98-40E9-A868-3D9604610DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4F85D60-EC98-40E9-A868-3D9604610DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37C49D5D-094B-4F8A-AC98-F6478819D20B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37C49D5D-094B-4F8A-AC98-F6478819D20B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37C49D5D-094B-4F8A-AC98-F6478819D20B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37C49D5D-094B-4F8A-AC98-F6478819D20B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{5046EEE4-4398-442A-AE0B-6C3CFF0D17C0} = {875229ED-5415-476A-8449-17A180717877}
 		{402B1BF7-8314-4F42-BE73-B3E491FA04EB} = {875229ED-5415-476A-8449-17A180717877}
 		{D4F85D60-EC98-40E9-A868-3D9604610DEC} = {875229ED-5415-476A-8449-17A180717877}
+		{37C49D5D-094B-4F8A-AC98-F6478819D20B} = {875229ED-5415-476A-8449-17A180717877}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03B48D7A-D1FA-42B8-B4B5-E9BA9125FA87}
