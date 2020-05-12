@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@1.10.2",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "font-awesome@4.0.3",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "bootstrap@3.3.0",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "dist/css/bootstrap-theme.css",
+        "dist/css/bootstrap-theme.css.map",
+        "dist/css/bootstrap-theme.min.css",
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap.css.map",
+        "dist/css/bootstrap.min.css",
+        "dist/fonts/glyphicons-halflings-regular.eot",
+        "dist/fonts/glyphicons-halflings-regular.svg",
+        "dist/fonts/glyphicons-halflings-regular.ttf",
+        "dist/fonts/glyphicons-halflings-regular.woff",
+        "dist/js/bootstrap.js",
+        "dist/js/bootstrap.min.js",
+        "dist/js/npm.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "bootstrap@3.3.0",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "dist/css/bootstrap-theme.css",
+        "dist/css/bootstrap-theme.css.map",
+        "dist/css/bootstrap-theme.min.css",
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap.css.map",
+        "dist/css/bootstrap.min.css",
+        "dist/fonts/glyphicons-halflings-regular.eot",
+        "dist/fonts/glyphicons-halflings-regular.svg",
+        "dist/fonts/glyphicons-halflings-regular.ttf",
+        "dist/fonts/glyphicons-halflings-regular.woff",
+        "dist/js/bootstrap.js",
+        "dist/js/bootstrap.min.js",
+        "dist/js/npm.js"
+      ]
+    },
+    {
+      "library": "prettyPhoto@3.1.6",
+      "destination": "wwwroot/lib/prettyPhoto/"
+    }
+  ]
+}

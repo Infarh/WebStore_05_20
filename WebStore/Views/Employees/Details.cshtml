@@ -1,0 +1,18 @@
+﻿@model EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Сотрудник #" + Model.Id;
+}
+
+<div class="container">
+    <h3>@ViewData["Title"]</h3>
+    <hr />
+
+    <p>@Model.SecondName</p>
+    <p>@Model.Name</p>
+    <p>@Model.Patronymic</p>
+    <p>@Model.Age</p>
+
+    <hr />
+    <a asp-controller="Employees" asp-action="Index">Сотрудники</a>
+</div>

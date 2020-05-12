@@ -1,0 +1,56 @@
+﻿@model EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Редактирование сотрудника id:" + Model.Id;
+}
+
+<div class="container">
+    <h3>@ViewData["Title"]</h3>
+    <hr />
+
+    @*@using (Html.BeginForm("Edit", "Employees", FormMethod.Post))
+        {
+
+        }*@
+
+    <form asp-action="Edit" method="post">
+        @*asp-route-Id="@Model.Id"*@
+
+        <div class="row">
+            <div class="col-md-4">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input asp-for="Id" type="hidden" />
+
+                <div class="form-group">
+                    <label asp-for="SecondName" class="control-label"></label>
+                    <input asp-for="SecondName" class="form-control" />
+                    <span asp-validation-for="SecondName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Patronymic" class="control-label"></label>
+                    <input asp-for="Patronymic" class="form-control" />
+                    <span asp-validation-for="Patronymic" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Age" class="control-label"></label>
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <input type="submit" value="Сохранить" class="btn btn-default"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,78 @@
+﻿@model CartOrderViewModel
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<section id="cart_items">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="#">Домой</a></li>
+                <li class="active">Корзина</li>
+            </ol>
+        </div>
+        <div class="table-responsive cart_info">
+            <table class="table table-condensed">
+                <thead>
+                    <tr class="cart_menu">
+                        <td class="image">Позиция</td>
+                        <td class="description">Описание</td>
+                        <td class="price">Цена</td>
+                        <td class="quantity">Количество</td>
+                        <td class="total">Итого</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var (product, quantity) in Model.CartViewModel.Items)
+                    {
+                        <tr>
+                            <td class="cart_product">
+                                <a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">
+                                    <img src="~/images/shop/@product.ImageUrl" alt="">
+                                </a>
+                            </td>
+                            <td class="cart_description">
+                                <h4><a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">
+                                    @product.Name
+                                </a></h4>
+                                <p>арт.: @product.Id.ToString("0000000")</p>
+                            </td>
+                            <td class="cart_price">
+                                <p>@product.Price.ToString("C")</p>
+                            </td>
+                            <td class="cart_quantity">
+                                <div class="cart_quantity_button">
+                                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id" class="cart_quantity_up"> + </a>
+                                    <input class="cart_quantity_input" type="text" name="quantity" value="@quantity" autocomplete="off" size="2">
+                                    <a asp-controller="Cart" asp-action="DecrementFromCart" asp-route-id="@product.Id" class="cart_quantity_down"> - </a>
+                                </div>
+                            </td>
+                            <td class="cart_total">
+                                <p class="cart_total_price">@((product.Price * quantity).ToString("C"))</p>
+                            </td>
+                            <td class="cart_delete">
+                                <a asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@product.Id" class="cart_quantity_delete"><i class="fa fa-times"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section> <!--/#cart_items-->
+
+<section id="do_action">
+    <div class="container">
+        <div class="heading">
+            <h3>Что бы Вы хотели сделать далее?</h3>
+            <p>Выберите, есть ли у вас код скидки или бонусные баллы, которые вы хотите использовать или хотите оценить стоимость доставки.</p>
+        </div>
+       
+        @{
+            var sum_cart = Model.CartViewModel.Items.Sum(item => item.Key.Price * item.Value);
+        }
+        <partial name="Partial/_CheckOut" model="@Model.OrderViewModel" view-data="@(new ViewDataDictionary(ViewData) { { "SumCart", sum_cart} })"/>
+
+    </div>
+</section><!--/#do_action-->
