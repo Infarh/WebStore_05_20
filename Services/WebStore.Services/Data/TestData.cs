@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using WebStore.Domain.Entities;
-using WebStore.Models;
+using WebStore.Domain.Models;
 
-namespace WebStore.Data
+namespace WebStore.Services.Data
 {
     public class TestData
     {
