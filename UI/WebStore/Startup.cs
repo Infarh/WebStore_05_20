@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebStore.Clients.Values;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Data;
 using WebStore.Services.Products.InCookies;
@@ -68,6 +70,8 @@ namespace WebStore
             services.AddScoped<IProductData, SqlProductData>();
             services.AddScoped<ICartService, CookiesCartService>();
             services.AddScoped<IOrderService, SqlOrderService>();
+
+            services.AddScoped<IValueServices, ValuesClient>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDBInitializer db)
