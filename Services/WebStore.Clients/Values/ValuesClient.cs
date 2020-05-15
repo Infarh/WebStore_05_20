@@ -5,13 +5,14 @@ using System.Net;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using WebStore.Clients.Base;
+using WebStore.Domain;
 using WebStore.Interfaces.Api;
 
 namespace WebStore.Clients.Values
 {
     public class ValuesClient : BaseClient, IValueServices
     {
-        public ValuesClient(IConfiguration Configuration) : base(Configuration, "api/values")
+        public ValuesClient(IConfiguration Configuration) : base(Configuration, WebAPI.Values)
         {
         }
 
