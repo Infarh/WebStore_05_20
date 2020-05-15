@@ -2,8 +2,10 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
+using WebStore.Domain.DTO.Products;
 using WebStore.Domain.Entities;
 using WebStore.Interfaces.Services;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Services.Products.InSQL
 {
@@ -21,7 +23,7 @@ namespace WebStore.Services.Products.InSQL
            .Include(brand => brand.Products)
            .AsEnumerable();
 
-        public IEnumerable<Product> GetProducts(ProductFilter Filter = null)
+        public IEnumerable<ProductDTO> GetProducts(ProductFilter Filter = null)
         {
             IQueryable<Product> query = _db.Products;
 
@@ -34,12 +36,15 @@ namespace WebStore.Services.Products.InSQL
             if (Filter?.Ids?.Count > 0)
                 query = query.Where(product => Filter.Ids.Contains(product.Id));
 
-            return query.AsEnumerable();
+            return query
+               .AsEnumerable()
+               .ToDTO();
         }
 
-        public Product GetProductById(int id) => _db.Products
+        public ProductDTO GetProductById(int id) => _db.Products
            .Include(p => p.Brand)
            .Include(p => p.Section)
-           .FirstOrDefault(p => p.Id == id);
+           .FirstOrDefault(p => p.Id == id)
+           .ToDTO();
     }
 }

@@ -28,7 +28,7 @@ namespace WebStore.Services.Mapping
             Price = Product.Price,
             ImageUrl = Product.ImageUrl,
             Brand = Product.Brand.ToDTO(),
-            Section = Product.Section.ToDTO()
+            Section = Product.Section.ToDTO(),
         };
 
         public static Product FromDTO(this ProductDTO Product) => Product is null ? null : new Product
@@ -41,9 +41,11 @@ namespace WebStore.Services.Mapping
             BrandId = Product.Brand?.Id,
             Brand = Product.Brand.FromDTO(),
             SectionId = Product.Section.Id,
-            Section = Product.Section.FromDTO()
+            Section = Product.Section.FromDTO(),
         };
 
         public static IEnumerable<Product> FromDTO(this IEnumerable<ProductDTO> Products) => Products?.Select(FromDTO);
+
+        public static IEnumerable<ProductDTO> ToDTO(this IEnumerable<Product> Products) => Products?.Select(ToDTO);
     }
 }
