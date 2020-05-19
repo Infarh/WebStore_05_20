@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{C378DB21-86C3-4278-BF17-8349BD6632A9}"
-	ProjectSection(SolutionItems) = preProject
-		Services\WebStore.Services\Products\InSQL\SqlProductData.cs = Services\WebStore.Services\Products\InSQL\SqlProductData.cs
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{875229ED-5415-476A-8449-17A180717877}"
 EndProject
