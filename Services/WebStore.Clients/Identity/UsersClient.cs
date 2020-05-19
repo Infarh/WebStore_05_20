@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using WebStore.Clients.Base;
 using WebStore.Domain;
 using WebStore.Domain.DTO.Identity;
@@ -16,7 +17,10 @@ namespace WebStore.Clients.Identity
 {
     public class UsersClient : BaseClient, IUsersClient
     {
-        public UsersClient(IConfiguration Configuration) : base(Configuration, WebAPI.Identity.Users) { }
+        private readonly ILogger<UsersClient> _Logger;
+
+        public UsersClient(IConfiguration Configuration, ILogger<UsersClient> Logger) : base(Configuration, WebAPI.Identity.Users) =>
+            _Logger = Logger;
 
         #region Implementation of IUserStore<User>
 
@@ -38,6 +42,7 @@ namespace WebStore.Clients.Identity
 
         public async Task SetUserNameAsync(User user, string name, CancellationToken cancel)
         {
+            _Logger.LogInformation("Изменение имени пользователя {0} на новое {1}", user.UserName, name);
             user.UserName = name;
             await PostAsync($"{_ServiceAddress}/UserName/{name}", user, cancel);
         }
@@ -58,9 +63,16 @@ namespace WebStore.Clients.Identity
 
         public async Task<IdentityResult> CreateAsync(User user, CancellationToken cancel)
         {
-            return await (await PostAsync($"{_ServiceAddress}/User", user, cancel))
+            var creation_success = await (await PostAsync($"{_ServiceAddress}/User", user, cancel))
                .Content
-               .ReadAsAsync<bool>(cancel)
+               .ReadAsAsync<bool>(cancel);
+
+            if(creation_success)
+                _Logger.LogInformation("Новый пользователь {0} создан успешно", user.UserName);
+            else
+                _Logger.LogWarning("Произошла ошибка при попытке создания нового пользователя {0}", user.UserName);
+
+            return creation_success
                 ? IdentityResult.Success
                 : IdentityResult.Failed();
         }
