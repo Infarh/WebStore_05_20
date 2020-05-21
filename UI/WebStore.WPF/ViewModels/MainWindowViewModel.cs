@@ -91,7 +91,7 @@ namespace WebStore.WPF.ViewModels
             var editor = new EmployeeEditorWindow { DataContext = employee };
             if (editor.ShowDialog() != true) return;
 
-            await Task.Run(() => _EmployeesData.Add(employee));
+            await _EmployeesData.AddAsync(employee);
             Employees.Add(employee);
         }
 
@@ -109,7 +109,7 @@ namespace WebStore.WPF.ViewModels
         private async void OnDeleteEmployeeCommandExecuted(object p)
         {
             if (!(p is Employee employee)) return;
-            await Task.Run(() => _EmployeesData.Delete(employee.Id));
+            await _EmployeesData.DeleteAsync(employee.Id);
             Employees?.Remove(employee);
         }
 
@@ -131,12 +131,12 @@ namespace WebStore.WPF.ViewModels
             var editor = new EmployeeEditorWindow { DataContext = employee };
             if (editor.ShowDialog() != true)
             {
-                var service_employee = await Task.Run(() => _EmployeesData.GetById(employee.Id));
+                var service_employee = await _EmployeesData.GetByIdAsync(employee.Id);
                 Employees[Employees.IndexOf(employee)] = service_employee;
             }
             else
             {
-                await Task.Run(() => _EmployeesData.Edit(employee.Id, employee));
+                await _EmployeesData.EditAsync(employee.Id, employee);
             }
         }
 
