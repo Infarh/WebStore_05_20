@@ -16,7 +16,9 @@ namespace WebStore.WPF
 
         public static IHostBuilder CreateHostBuilder(string[] args) => 
             Host.CreateDefaultBuilder(args)
+               .UseContentRoot(App.CurrentDirectory)
                .ConfigureAppConfiguration((host, cfg) =>
-                    cfg.AddJsonFile("appsettings.json", true, true));
+                    cfg.SetBasePath(App.CurrentDirectory)
+                       .AddJsonFile("appsettings.json", true, true));
     }
 }

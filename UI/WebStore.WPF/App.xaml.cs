@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using Microsoft.Extensions.Hosting;
 
@@ -34,5 +36,9 @@ namespace WebStore.WPF
             host.Dispose();
             __Host = null;
         }
+
+        public static string CurrentDirectory => IsDesignTime ? Path.GetDirectoryName(GetSourceCodePath()) : Environment.CurrentDirectory;
+
+        public static string GetSourceCodePath([CallerFilePath] string path = null) => path;
     }
 }
