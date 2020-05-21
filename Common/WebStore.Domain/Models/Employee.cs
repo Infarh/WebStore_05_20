@@ -11,5 +11,8 @@
         public string Patronymic { get; set; }
 
         public int Age { get; set; }
+
+        public override string ToString() => 
+            $"id:{Id}, Surname:{SurName}, Name:{FirstName}, Patronymic:{Patronymic}, Age:{Age}";
     }
 }

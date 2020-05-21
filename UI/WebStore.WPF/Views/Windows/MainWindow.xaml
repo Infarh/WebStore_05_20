@@ -7,6 +7,8 @@
         xmlns:cmd="clr-namespace:WebStore.WPF.Infrastructure.Commands"
         xmlns:vm="clr-namespace:WebStore.WPF.ViewModels"
         xmlns:l="clr-namespace:WebStore.WPF"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:models="clr-namespace:WebStore.Domain.Models;assembly=WebStore.Domain"
         Title="{Binding Title}"
         Width="800" Height="450"
         DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}">
@@ -35,7 +37,55 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <GroupBox Grid.Column="0" Header="Сотрудники">
-                <ListBox ItemsSource="{Binding Employees}"/>
+                <DockPanel>
+                    <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,3">
+                        <UniformGrid.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Margin" Value="3,0"/>
+                            </Style>
+                        </UniformGrid.Resources>
+                        <Button Command="{Binding CreateEmployeeCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <fa:ImageAwesome Height="12" Icon="Solid_Plus" Foreground="Green" Margin="0,0,3,0"/>
+                                <TextBlock Text="Добавить"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding DeleteEmployeeCommand}" CommandParameter="{Binding SelectedEmployee}">
+                            <StackPanel Orientation="Horizontal">
+                                <fa:ImageAwesome Height="12" Icon="Solid_Times" Foreground="Red" Margin="0,0,3,0"/>
+                                <TextBlock Text="Удалить"/>
+                            </StackPanel>
+                        </Button>
+                    </UniformGrid>
+                    <ListBox ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:Employee}">
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Background="Transparent" 
+                                            Command="{Binding DataContext.DeleteEmployeeCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}"
+                                            BorderThickness="0">
+                                        <fa:ImageAwesome Height="12" Icon="Solid_Trash" Foreground="Red"/>
+                                    </Button>
+                                    <TextBlock>
+                                        <TextBlock.ToolTip>
+                                            <TextBlock Text="{Binding Age, StringFormat=Возраст {0} лет}"/>
+                                        </TextBlock.ToolTip>
+                                        <TextBlock Text="{Binding SurName}"/>
+                                        <TextBlock Text="{Binding FirstName}"/>
+                                        <TextBlock Text="{Binding Patronymic}"/>
+                                    </TextBlock>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
             </GroupBox>
         </Grid>
     </DockPanel>

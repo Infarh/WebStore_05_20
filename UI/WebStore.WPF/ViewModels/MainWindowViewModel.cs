@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WebStore.Domain.Models;
 using WebStore.Interfaces.Services;
 using WebStore.WPF.Infrastructure.Commands;
 using WebStore.WPF.ViewModels.Base;
+using WebStore.WPF.Views.Windows;
 
 namespace WebStore.WPF.ViewModels
 {
@@ -37,6 +39,16 @@ namespace WebStore.WPF.ViewModels
 
         #endregion
 
+        #region SelectedEmployee : Employee - Выбранный сотрудник
+
+        /// <summary>Выбранный сотрудник</summary>
+        private Employee _SelectedEmployee;
+
+        /// <summary>Выбранный сотрудник</summary>
+        public Employee SelectedEmployee { get => _SelectedEmployee; set => Set(ref _SelectedEmployee, value); }
+
+        #endregion
+
         #region Команды
 
         #region Command RefreshEmployeesCommand - Загрузить данные по сотрудникам
@@ -48,8 +60,85 @@ namespace WebStore.WPF.ViewModels
         private static bool CanRefreshEmployeesCommandExecute(object p) => true;
 
         /// <summary>Логика выполнения - Загрузить данные по сотрудникам</summary>
-        private async void OnRefreshEmployeesCommandExecuted(object p) => 
+        private async void OnRefreshEmployeesCommandExecuted(object p) =>
             Employees = new ObservableCollection<Employee>(await Task.Run(() => _EmployeesData.GetAll()));
+
+        #endregion
+
+        #region Command CreateEmployeeCommand - Создание нового сотрудника
+
+        /// <summary>Создание нового сотрудника</summary>
+        public ICommand CreateEmployeeCommand { get; }
+
+        /// <summary>Проверка возможности выполнения - Создание нового сотрудника</summary>
+        private static bool CanCreateEmployeeCommandExecute(object p) => true;
+
+        /// <summary>Логика выполнения - Создание нового сотрудника</summary>
+        private async void OnCreateEmployeeCommandExecuted(object p)
+        {
+            var id = 1;
+            if (_Employees != null && _Employees.Count > 0)
+            {
+                id = _Employees.Max(e => e.Id) + 1;
+            }
+            var employee = new Employee
+            {
+                SurName = $"Surname {id}",
+                FirstName = $"Name {id}",
+                Patronymic = $"Patronymic {id}",
+                Age = 25
+            };
+            var editor = new EmployeeEditorWindow { DataContext = employee };
+            if (editor.ShowDialog() != true) return;
+
+            await Task.Run(() => _EmployeesData.Add(employee));
+            Employees.Add(employee);
+        }
+
+        #endregion
+
+        #region Command DeleteEmployeeCommand - Удаление сотрудника
+
+        /// <summary>Удаление сотрудника</summary>
+        public ICommand DeleteEmployeeCommand { get; }
+
+        /// <summary>Проверка возможности выполнения - Удаление сотрудника</summary>
+        private bool CanDeleteEmployeeCommandExecute(object p) => p is Employee employee && (Employees?.Contains(employee) ?? false);
+
+        /// <summary>Логика выполнения - Удаление сотрудника</summary>
+        private async void OnDeleteEmployeeCommandExecuted(object p)
+        {
+            if (!(p is Employee employee)) return;
+            await Task.Run(() => _EmployeesData.Delete(employee.Id));
+            Employees?.Remove(employee);
+        }
+
+        #endregion
+
+        #region Command EditEmployeeCommand - Редактирование сотрудника
+
+        /// <summary>Редактирование сотрудника</summary>
+        public ICommand EditEmployeeCommand { get; }
+
+        /// <summary>Проверка возможности выполнения - Редактирование сотрудника</summary>
+        private static bool CanEditEmployeeCommandExecute(object p) => p is Employee;
+
+        /// <summary>Логика выполнения - Редактирование сотрудника</summary>
+        private async void OnEditEmployeeCommandExecuted(object p)
+        {
+            if (!(p is Employee employee)) return;
+
+            var editor = new EmployeeEditorWindow { DataContext = employee };
+            if (editor.ShowDialog() != true)
+            {
+                var service_employee = await Task.Run(() => _EmployeesData.GetById(employee.Id));
+                Employees[Employees.IndexOf(employee)] = service_employee;
+            }
+            else
+            {
+                await Task.Run(() => _EmployeesData.Edit(employee.Id, employee));
+            }
+        }
 
         #endregion
 
@@ -62,6 +151,10 @@ namespace WebStore.WPF.ViewModels
             #region Команды
 
             RefreshEmployeesCommand = new LambdaCommand(OnRefreshEmployeesCommandExecuted, CanRefreshEmployeesCommandExecute);
+
+            CreateEmployeeCommand = new LambdaCommand(OnCreateEmployeeCommandExecuted, CanCreateEmployeeCommandExecute);
+            EditEmployeeCommand = new LambdaCommand(OnEditEmployeeCommandExecuted, CanEditEmployeeCommandExecute);
+            DeleteEmployeeCommand = new LambdaCommand(OnDeleteEmployeeCommandExecuted, CanDeleteEmployeeCommandExecute);
 
             #endregion
         }
