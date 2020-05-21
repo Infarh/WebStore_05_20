@@ -7,10 +7,8 @@
         xmlns:vm="clr-namespace:WebStore.WPF.ViewModels"
         xmlns:l="clr-namespace:WebStore.WPF"
         Title="{Binding Title}"
-        Width="800" Height="450">
-    <Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>
+        Width="800" Height="450"
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}">
     <DockPanel>
         <Menu DockPanel.Dock="Top"></Menu>
         <StatusBar DockPanel.Dock="Bottom">

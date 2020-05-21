@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebStore.Clients.Employees;
@@ -24,7 +25,6 @@ namespace WebStore.WPF
             __IsDesignTime = false;
 
             var host = Host;
-
 
             base.OnStartup(e);
 

@@ -1,9 +1,12 @@
 ﻿<Application x:Class="WebStore.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:WebStore.WPF"
+             xmlns:vm="clr-namespace:WebStore.WPF.ViewModels"
              StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
-         
+         <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True"/>
     </Application.Resources>
 </Application>

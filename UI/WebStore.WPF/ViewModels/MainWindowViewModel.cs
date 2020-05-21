@@ -30,7 +30,7 @@ namespace WebStore.WPF.ViewModels
         /// <summary>Сотрудники</summary>
         public IEnumerable<Employee> Employees
         {
-            get => _Employees; 
+            get => _Employees;
             private set => Set(ref _Employees, value);
         }
 

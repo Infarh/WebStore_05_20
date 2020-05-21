@@ -19,7 +19,7 @@ namespace WebStore.WPF
                .UseContentRoot(App.CurrentDirectory)
                .ConfigureAppConfiguration((host, cfg) =>
                     cfg.SetBasePath(App.CurrentDirectory)
-                       .AddJsonFile("appsettings.json", true, true))
+                       .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true))
                .ConfigureServices(App.ConfigureServices);
     }
 }
