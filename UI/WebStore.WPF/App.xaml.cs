@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace WebStore.WPF
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        private static bool __IsDesignTime = true;
+        public static bool IsDesignTime => __IsDesignTime;
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            __IsDesignTime = false;
+
+            base.OnStartup(e);
+        }
     }
 }
