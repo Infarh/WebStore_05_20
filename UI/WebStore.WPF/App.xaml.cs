@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace WebStore.WPF
@@ -35,6 +36,11 @@ namespace WebStore.WPF
             await host.StopAsync().ConfigureAwait(false);
             host.Dispose();
             __Host = null;
+        }
+
+        public static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
+        {
+            
         }
 
         public static string CurrentDirectory => IsDesignTime ? Path.GetDirectoryName(GetSourceCodePath()) : Environment.CurrentDirectory;
