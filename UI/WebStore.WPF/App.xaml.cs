@@ -4,6 +4,9 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebStore.Clients.Employees;
+using WebStore.Interfaces.Services;
+using WebStore.WPF.ViewModels;
 
 namespace WebStore.WPF
 {
@@ -40,7 +43,10 @@ namespace WebStore.WPF
 
         public static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
-            
+            services.AddTransient(s => new MainWindow { DataContext = s.GetRequiredService<MainWindowViewModel>()});
+            services.AddSingleton<MainWindowViewModel>();
+
+            services.AddSingleton<IEmployeesData, EmployeesClient>();
         }
 
         public static string CurrentDirectory => IsDesignTime ? Path.GetDirectoryName(GetSourceCodePath()) : Environment.CurrentDirectory;
