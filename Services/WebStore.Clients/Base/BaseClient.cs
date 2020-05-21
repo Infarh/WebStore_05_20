@@ -33,8 +33,8 @@ namespace WebStore.Clients.Base
 
         protected async Task<T> GetAsync<T>(string url, CancellationToken Cancel = default)// where T : new()
         {
-            var response = await _Client.GetAsync(url, Cancel);
-            return await response.EnsureSuccessStatusCode().Content.ReadAsAsync<T>(Cancel);
+            var response = await _Client.GetAsync(url, Cancel).ConfigureAwait(false);
+            return await response.EnsureSuccessStatusCode().Content.ReadAsAsync<T>(Cancel).ConfigureAwait(false);
             //if (response.IsSuccessStatusCode)
             //    return await response.Content.ReadAsAsync<T>(Cancel);
             //return new T();
@@ -44,7 +44,7 @@ namespace WebStore.Clients.Base
 
         protected async Task<HttpResponseMessage> PostAsync<T>(string url, T item, CancellationToken Cancel = default)
         {
-            var response = await _Client.PostAsJsonAsync(url, item, Cancel);
+            var response = await _Client.PostAsJsonAsync(url, item, Cancel).ConfigureAwait(false);
             return response.EnsureSuccessStatusCode();
         }
 
@@ -52,7 +52,7 @@ namespace WebStore.Clients.Base
 
         protected async Task<HttpResponseMessage> PutAsync<T>(string url, T item, CancellationToken Cancel = default)
         {
-            var response = await _Client.PutAsJsonAsync(url, item, Cancel);
+            var response = await _Client.PutAsJsonAsync(url, item, Cancel).ConfigureAwait(false);
             return response.EnsureSuccessStatusCode();
         }
 
@@ -60,7 +60,7 @@ namespace WebStore.Clients.Base
 
         protected async Task<HttpResponseMessage> DeleteAsync(string url, CancellationToken Cancel = default)
         {
-            return await _Client.DeleteAsync(url, Cancel);
+            return await _Client.DeleteAsync(url, Cancel).ConfigureAwait(false);
         }
 
         //~BaseClient() => Dispose(false);
