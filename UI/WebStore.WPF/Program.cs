@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace WebStore.WPF
 {
@@ -11,5 +13,10 @@ namespace WebStore.WPF
             app.InitializeComponent();
             app.Run();
         }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) => 
+            Host.CreateDefaultBuilder(args)
+               .ConfigureAppConfiguration((host, cfg) =>
+                    cfg.AddJsonFile("appsettings.json", true, true));
     }
 }
