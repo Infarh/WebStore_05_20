@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using WebStore.Domain.Models;
 using WebStore.Interfaces.Services;
@@ -25,6 +27,14 @@ namespace WebStore.Services.Products.InMemory
             return _Employees;
         }
 
+        public Task<IEnumerable<Employee>> GetAllAsync(CancellationToken Cancel = default)
+        {
+            if (Cancel.IsCancellationRequested)
+                return Task.FromCanceled<IEnumerable<Employee>>(Cancel);
+
+            return Task.FromResult<IEnumerable<Employee>>(_Employees);
+        }
+
         public Employee GetById(int id)
         {
             _Logger.LogInformation("Запрошен сотрудник с id {0}", id);
@@ -35,6 +45,14 @@ namespace WebStore.Services.Products.InMemory
                 _Logger.LogInformation("Найден сотрудник {0}", employee);
 
             return employee;
+        }
+
+        public Task<Employee> GetByIdAsync(int id, CancellationToken Cancel = default)
+        {
+            if (Cancel.IsCancellationRequested)
+                return Task.FromCanceled<Employee>(Cancel);
+
+            return Task.FromResult(_Employees.FirstOrDefault(e => e.Id == id));
         }
 
         public void Add(Employee Employee)
@@ -51,6 +69,20 @@ namespace WebStore.Services.Products.InMemory
             Employee.Id = _Employees.Count == 0 ? 1 : _Employees.Max(e => e.Id) + 1;
             _Employees.Add(Employee);
             _Logger.LogInformation("Сотрудник {0} добавлен", Employee);
+        }
+
+        public Task AddAsync(Employee Employee, CancellationToken Cancel = default)
+        {
+            if (Cancel.IsCancellationRequested)
+                return Task.FromCanceled(Cancel);
+
+            if (_Employees.Contains(Employee))
+                return Task.CompletedTask;
+
+            Employee.Id = _Employees.Count == 0 ? 1 : _Employees.Max(e => e.Id) + 1;
+            _Employees.Add(Employee);
+
+            return Task.CompletedTask;
         }
 
         public void Edit(int id, Employee Employee)
@@ -80,6 +112,26 @@ namespace WebStore.Services.Products.InMemory
             _Logger.LogInformation("Сотрудник {0} отредактирован", Employee);
         }
 
+        public Task EditAsync(int id, Employee Employee, CancellationToken Cancel = default)
+        {
+            if (Cancel.IsCancellationRequested)
+                return Task.FromCanceled(Cancel);
+
+            if (_Employees.Contains(Employee))
+                return Task.CompletedTask;
+
+            var db_employee = GetById(id);
+            if (db_employee is null)
+                return Task.CompletedTask;
+
+            db_employee.SurName = Employee.SurName;
+            db_employee.FirstName = Employee.FirstName;
+            db_employee.Patronymic = Employee.Patronymic;
+            db_employee.Age = Employee.Age;
+
+            return Task.CompletedTask;
+        }
+
         public bool Delete(int id)
         {
             _Logger.LogInformation("Попытка удаления сотрудника id:{0}", id);
@@ -92,7 +144,7 @@ namespace WebStore.Services.Products.InMemory
             }
 
             var remove_result = _Employees.Remove(db_employee);
-            if(remove_result)
+            if (remove_result)
                 _Logger.LogInformation("Сотрудник {0} удалён", db_employee);
             else
                 _Logger.LogWarning("Сотрудник {0} отсутствовал в списке!", db_employee);
@@ -100,6 +152,29 @@ namespace WebStore.Services.Products.InMemory
             return remove_result;
         }
 
+        public Task<bool> DeleteAsync(int id, CancellationToken Cancel = default)
+        {
+            if (Cancel.IsCancellationRequested)
+                return Task.FromCanceled<bool>(Cancel);
+
+            var db_employee = GetById(id);
+            if (db_employee is null)
+            {
+                _Logger.LogWarning("Сотрудник id:{0} не найден", id);
+                return Task.FromResult(false);
+            }
+
+            var remove_result = _Employees.Remove(db_employee);
+            if (remove_result)
+                _Logger.LogInformation("Сотрудник {0} удалён", db_employee);
+            else
+                _Logger.LogWarning("Сотрудник {0} отсутствовал в списке!", db_employee);
+
+            return Task.FromResult(remove_result);
+        }
+
         public void SaveChanges() { }
+
+        public Task SaveChangesAsync(CancellationToken Cancel = default) => Cancel.IsCancellationRequested ? Task.FromCanceled(Cancel) :  Task.CompletedTask;
     }
 }

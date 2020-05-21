@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using WebStore.Clients.Base;
 using WebStore.Domain;
@@ -13,14 +15,35 @@ namespace WebStore.Clients.Employees
 
         public IEnumerable<Employee> GetAll() => Get<List<Employee>>(_ServiceAddress);
 
+        public async Task<IEnumerable<Employee>> GetAllAsync(CancellationToken Cancel = default) => 
+            await GetAsync<IEnumerable<Employee>>(_ServiceAddress, Cancel)
+               .ConfigureAwait(false);
+
         public Employee GetById(int id) => Get<Employee>($"{_ServiceAddress}/{id}");
+
+        public async Task<Employee> GetByIdAsync(int id, CancellationToken Cancel = default) =>
+            await GetAsync<Employee>($"{_ServiceAddress}/{id}", Cancel)
+               .ConfigureAwait(false);
 
         public void Add(Employee Employee) => Post(_ServiceAddress, Employee);
 
+        public async Task AddAsync(Employee Employee, CancellationToken Cancel = default) =>
+            await PostAsync(_ServiceAddress, Employee, Cancel)
+               .ConfigureAwait(false);
+
         public void Edit(int id, Employee Employee) => Put($"{_ServiceAddress}/{id}", Employee);
+
+        public async Task EditAsync(int id, Employee Employee, CancellationToken Cancel = default) =>
+            await PutAsync($"{_ServiceAddress}/{id}", Employee, Cancel)
+               .ConfigureAwait(false);
 
         public bool Delete(int id) => Delete($"{_ServiceAddress}/{id}").IsSuccessStatusCode;
 
+        public async Task<bool> DeleteAsync(int id, CancellationToken Cancel = default) =>
+            (await DeleteAsync($"{_ServiceAddress}/{id}", Cancel).ConfigureAwait(false)).IsSuccessStatusCode;
+
         public void SaveChanges() { }
+
+        public Task SaveChangesAsync(CancellationToken Cancel = default) => Cancel.IsCancellationRequested ? Task.FromCanceled(Cancel) : Task.CompletedTask;
     }
 }
