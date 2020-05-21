@@ -3,14 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:cmd="clr-namespace:WebStore.WPF.Infrastructure.Commands"
         xmlns:vm="clr-namespace:WebStore.WPF.ViewModels"
         xmlns:l="clr-namespace:WebStore.WPF"
         Title="{Binding Title}"
         Width="800" Height="450"
         DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Initialized">
+            <i:EventTrigger.Actions>
+                <i:InvokeCommandAction Command="{Binding RefreshEmployeesCommand}"/>
+            </i:EventTrigger.Actions>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <DockPanel>
-        <Menu DockPanel.Dock="Top"></Menu>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Загрузка данных" Command="{Binding RefreshEmployeesCommand}"/>
+        </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem DockPanel.Dock="Right">
                 <ResizeGrip/>
@@ -20,7 +30,13 @@
             </StatusBarItem>
         </StatusBar>
         <Grid>
-
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0" Header="Сотрудники">
+                <ListBox ItemsSource="{Binding Employees}"/>
+            </GroupBox>
         </Grid>
     </DockPanel>
 </Window>

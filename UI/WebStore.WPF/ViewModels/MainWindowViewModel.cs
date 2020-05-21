@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WebStore.Domain.Models;
@@ -22,13 +23,13 @@ namespace WebStore.WPF.ViewModels
 
         #endregion
 
-        #region Employees : IEnumerable<Employee> - Сотрудники
+        #region Employees : ObservableCollection<Employee> - Сотрудники
 
         /// <summary>Сотрудники</summary>
-        private IEnumerable<Employee> _Employees;
+        private ObservableCollection<Employee> _Employees;
 
         /// <summary>Сотрудники</summary>
-        public IEnumerable<Employee> Employees
+        public ObservableCollection<Employee> Employees
         {
             get => _Employees;
             private set => Set(ref _Employees, value);
@@ -47,10 +48,8 @@ namespace WebStore.WPF.ViewModels
         private static bool CanRefreshEmployeesCommandExecute(object p) => true;
 
         /// <summary>Логика выполнения - Загрузить данные по сотрудникам</summary>
-        private async void OnRefreshEmployeesCommandExecuted(object p)
-        {
-            Employees = await Task.Run(() => _EmployeesData.GetAll());
-        }
+        private async void OnRefreshEmployeesCommandExecuted(object p) => 
+            Employees = new ObservableCollection<Employee>(await Task.Run(() => _EmployeesData.GetAll()));
 
         #endregion
 
