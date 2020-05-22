@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using WebStore.Domain.Models;
 using WebStore.Interfaces.Services;
@@ -86,7 +86,7 @@ namespace WebStore.WPF.ViewModels
                 Age = 25
             };
 
-            var editor = new EmployeeEditorWindow { DataContext = employee };
+            var editor = new EmployeeEditorWindow { DataContext = employee, Owner = Application.Current.MainWindow };
             if (editor.ShowDialog() != true) return;
 
             employee.Id = await _EmployeesData.AddAsync(employee);
@@ -126,15 +126,13 @@ namespace WebStore.WPF.ViewModels
         {
             if (!(p is Employee employee)) return;
 
-            var editor = new EmployeeEditorWindow { DataContext = employee };
-            if (editor.ShowDialog() != true)
+            var editor = new EmployeeEditorWindow { DataContext = employee, Owner = Application.Current.MainWindow };
+            if (editor.ShowDialog() == true)
+                await _EmployeesData.EditAsync(employee);
+            else
             {
                 var service_employee = await _EmployeesData.GetByIdAsync(employee.Id);
                 Employees[Employees.IndexOf(employee)] = service_employee;
-            }
-            else
-            {
-                await _EmployeesData.EditAsync(employee);
             }
         }
 

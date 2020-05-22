@@ -9,7 +9,10 @@
         Title="Редактирование сотрудника"
         Width="434" Height="252"
         ShowInTaskbar="False"
+        SizeToContent="Height"
         WindowStyle="ToolWindow"
+        Topmost="True"
+        WindowStartupLocation="CenterOwner"
         d:DataContext="{d:DesignInstance models:Employee, IsDesignTimeCreatable=True}">
     <Grid Margin="10">
         <Grid.Resources>
@@ -59,7 +62,7 @@
         <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Age}"/>
 
         <UniformGrid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"
-                     VerticalAlignment="Top" HorizontalAlignment="Right"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Right"
                      Margin="20,5"
                      Rows="1">
             <UniformGrid.Resources>

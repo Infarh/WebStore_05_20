@@ -67,6 +67,11 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type models:Employee}">
                                 <DockPanel>
+                                    <DockPanel.InputBindings>
+                                        <MouseBinding MouseAction="LeftDoubleClick"
+                                                      Command="{Binding MainWindowViewModel.EditEmployeeCommand, Source={StaticResource Locator}}"
+                                                      CommandParameter="{Binding MainWindowViewModel.SelectedEmployee, Source={StaticResource Locator}}"/>
+                                    </DockPanel.InputBindings>
                                     <Button DockPanel.Dock="Right" Background="Transparent" 
                                             Command="{Binding DataContext.DeleteEmployeeCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                             CommandParameter="{Binding}"
