@@ -13,7 +13,7 @@
         Width="800" Height="450"
         DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}">
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Initialized">
+        <i:EventTrigger EventName="Loaded">
             <i:EventTrigger.Actions>
                 <i:InvokeCommandAction Command="{Binding RefreshEmployeesCommand}"/>
             </i:EventTrigger.Actions>

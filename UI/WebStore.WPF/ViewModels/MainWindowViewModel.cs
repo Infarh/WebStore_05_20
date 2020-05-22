@@ -76,11 +76,8 @@ namespace WebStore.WPF.ViewModels
         /// <summary>Логика выполнения - Создание нового сотрудника</summary>
         private async void OnCreateEmployeeCommandExecuted(object p)
         {
-            var id = 1;
-            if (_Employees != null && _Employees.Count > 0)
-            {
-                id = _Employees.Max(e => e.Id) + 1;
-            }
+            var id = (_Employees?.DefaultIfEmpty().Max(e => e.Id) ?? 0) + 1;
+
             var employee = new Employee
             {
                 SurName = $"Surname {id}",
@@ -88,10 +85,11 @@ namespace WebStore.WPF.ViewModels
                 Patronymic = $"Patronymic {id}",
                 Age = 25
             };
+
             var editor = new EmployeeEditorWindow { DataContext = employee };
             if (editor.ShowDialog() != true) return;
 
-            await _EmployeesData.AddAsync(employee);
+            employee.Id = await _EmployeesData.AddAsync(employee);
             Employees.Add(employee);
         }
 
