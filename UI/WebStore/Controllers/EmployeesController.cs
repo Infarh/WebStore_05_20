@@ -81,7 +81,7 @@ namespace WebStore.Controllers
             if(id == 0)
                 _EmployeesData.Add(Employee.FromView());
             else
-                _EmployeesData.Edit(id, Employee.FromView());
+                _EmployeesData.Edit(Employee.FromView());
 
             _EmployeesData.SaveChanges();
 

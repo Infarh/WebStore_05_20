@@ -134,7 +134,7 @@ namespace WebStore.WPF.ViewModels
             }
             else
             {
-                await _EmployeesData.EditAsync(employee.Id, employee);
+                await _EmployeesData.EditAsync(employee);
             }
         }
 

@@ -19,9 +19,9 @@ namespace WebStore.Interfaces.Services
 
         Task<int> AddAsync(Employee Employee, CancellationToken Cancel = default);
 
-        void Edit(int id, Employee Employee);
+        void Edit(Employee Employee);
 
-        Task EditAsync(int id, Employee Employee, CancellationToken Cancel = default);
+        Task EditAsync(Employee Employee, CancellationToken Cancel = default);
 
         bool Delete(int id);
 

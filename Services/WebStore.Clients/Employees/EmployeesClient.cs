@@ -34,10 +34,10 @@ namespace WebStore.Clients.Employees
                .Content.ReadAsAsync<int>(Cancel)
                .ConfigureAwait(false);
 
-        public void Edit(int id, Employee Employee) => Put($"{_ServiceAddress}/{id}", Employee);
+        public void Edit(Employee Employee) => Put($"{_ServiceAddress}", Employee);
 
-        public async Task EditAsync(int id, Employee Employee, CancellationToken Cancel = default) =>
-            await PutAsync($"{_ServiceAddress}/{id}", Employee, Cancel)
+        public async Task EditAsync(Employee Employee, CancellationToken Cancel = default) =>
+            await PutAsync($"{_ServiceAddress}", Employee, Cancel)
                .ConfigureAwait(false);
 
         public bool Delete(int id) => Delete($"{_ServiceAddress}/{id}").IsSuccessStatusCode;

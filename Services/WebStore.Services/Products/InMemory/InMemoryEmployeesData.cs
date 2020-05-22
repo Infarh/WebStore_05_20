@@ -101,9 +101,9 @@ namespace WebStore.Services.Products.InMemory
             return Task.FromResult(Employee.Id);
         }
 
-        public void Edit(int id, Employee Employee)
+        public void Edit(Employee Employee)
         {
-            _Logger.LogInformation("Попытка редактирования сотрудника id:{0} = {1}", id, Employee);
+            _Logger.LogInformation("Попытка редактирования сотрудника id:{0} = {1}", Employee.Id, Employee);
             if (Employee is null)
                 throw new ArgumentNullException(nameof(Employee));
 
@@ -113,7 +113,7 @@ namespace WebStore.Services.Products.InMemory
                 return;
             }
 
-            var db_employee = GetById(id);
+            var db_employee = GetById(Employee.Id);
             if (db_employee is null)
             {
                 _Logger.LogWarning("Сотрудник {0} не найден", Employee);
@@ -128,18 +128,19 @@ namespace WebStore.Services.Products.InMemory
             _Logger.LogInformation("Сотрудник {0} отредактирован", Employee);
         }
 
-        public Task EditAsync(int id, Employee Employee, CancellationToken Cancel = default)
+        public Task EditAsync(Employee Employee, CancellationToken Cancel = default)
         {
             if (Cancel.IsCancellationRequested)
                 return Task.FromCanceled(Cancel);
 
+            _Logger.LogInformation("Попытка редактирования сотрудника id:{0} = {1}", Employee.Id, Employee);
             if (_Employees.Contains(Employee))
             {
                 _Logger.LogWarning("Сотрудник {0} уже существует в памяти списка", Employee);
                 return Task.CompletedTask;
             }
 
-            var db_employee = GetById(id);
+            var db_employee = GetById(Employee.Id);
             if (db_employee is null)
             {
                 _Logger.LogWarning("Сотрудник {0} не найден", Employee);

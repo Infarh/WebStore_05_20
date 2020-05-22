@@ -31,10 +31,10 @@ namespace WebStore.ServiceHosting.Controllers
 
         async Task<int> IEmployeesData.AddAsync(Employee Employee, CancellationToken Cancel) => await _EmployeesData.AddAsync(Employee, Cancel);
 
-        [HttpPut("{id}")]
-        public void Edit(int id, [FromBody] Employee Employee) => _EmployeesData.Edit(id, Employee);
+        [HttpPut]
+        public void Edit([FromBody] Employee Employee) => _EmployeesData.Edit(Employee);
 
-        async Task IEmployeesData.EditAsync(int id, Employee Employee, CancellationToken Cancel) => await _EmployeesData.EditAsync(id, Employee, Cancel);
+        async Task IEmployeesData.EditAsync(Employee Employee, CancellationToken Cancel) => await _EmployeesData.EditAsync(Employee, Cancel);
 
         [HttpDelete("{id}")]
         public bool Delete(int id) => _EmployeesData.Delete(id);
