@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +16,7 @@ namespace WebStore.Clients.Employees
 
         public IEnumerable<Employee> GetAll() => Get<List<Employee>>(_ServiceAddress);
 
-        public async Task<IEnumerable<Employee>> GetAllAsync(CancellationToken Cancel = default) => 
+        public async Task<IEnumerable<Employee>> GetAllAsync(CancellationToken Cancel = default) =>
             await GetAsync<IEnumerable<Employee>>(_ServiceAddress, Cancel)
                .ConfigureAwait(false);
 
@@ -25,10 +26,12 @@ namespace WebStore.Clients.Employees
             await GetAsync<Employee>($"{_ServiceAddress}/{id}", Cancel)
                .ConfigureAwait(false);
 
-        public void Add(Employee Employee) => Post(_ServiceAddress, Employee);
+        public int Add(Employee Employee) => Post(_ServiceAddress, Employee).Content.ReadAsAsync<int>().Result;
 
-        public async Task AddAsync(Employee Employee, CancellationToken Cancel = default) =>
-            await PostAsync(_ServiceAddress, Employee, Cancel)
+        public async Task<int> AddAsync(Employee Employee, CancellationToken Cancel = default) =>
+            await (await PostAsync(_ServiceAddress, Employee, Cancel).ConfigureAwait(false))
+               .EnsureSuccessStatusCode()
+               .Content.ReadAsAsync<int>(Cancel)
                .ConfigureAwait(false);
 
         public void Edit(int id, Employee Employee) => Put($"{_ServiceAddress}/{id}", Employee);

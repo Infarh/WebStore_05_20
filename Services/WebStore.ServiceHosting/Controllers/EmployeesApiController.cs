@@ -27,9 +27,9 @@ namespace WebStore.ServiceHosting.Controllers
         async Task<Employee> IEmployeesData.GetByIdAsync(int id, CancellationToken Cancel) => await _EmployeesData.GetByIdAsync(id, Cancel);
 
         [HttpPost]
-        public void Add([FromBody] Employee Employee) => _EmployeesData.Add(Employee);
+        public int Add([FromBody] Employee Employee) => _EmployeesData.Add(Employee);
 
-        async Task IEmployeesData.AddAsync(Employee Employee, CancellationToken Cancel) => await _EmployeesData.AddAsync(Employee, Cancel);
+        async Task<int> IEmployeesData.AddAsync(Employee Employee, CancellationToken Cancel) => await _EmployeesData.AddAsync(Employee, Cancel);
 
         [HttpPut("{id}")]
         public void Edit(int id, [FromBody] Employee Employee) => _EmployeesData.Edit(id, Employee);

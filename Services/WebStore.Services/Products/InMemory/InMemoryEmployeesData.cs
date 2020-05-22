@@ -32,12 +32,14 @@ namespace WebStore.Services.Products.InMemory
             if (Cancel.IsCancellationRequested)
                 return Task.FromCanceled<IEnumerable<Employee>>(Cancel);
 
+            _Logger.LogInformation("Запрос списка сотрудников. Возращено {0} сотрудников", _Employees.Count);
             return Task.FromResult<IEnumerable<Employee>>(_Employees);
         }
 
         public Employee GetById(int id)
         {
             _Logger.LogInformation("Запрошен сотрудник с id {0}", id);
+
             var employee = _Employees.FirstOrDefault(e => e.Id == id);
             if (employee is null)
                 _Logger.LogInformation("Сотрудник с id:{0} не найден!", id);
@@ -52,10 +54,17 @@ namespace WebStore.Services.Products.InMemory
             if (Cancel.IsCancellationRequested)
                 return Task.FromCanceled<Employee>(Cancel);
 
-            return Task.FromResult(_Employees.FirstOrDefault(e => e.Id == id));
+            var employee = _Employees.FirstOrDefault(e => e.Id == id);
+
+            if (employee is null)
+                _Logger.LogInformation("Сотрудник с id:{0} не найден!", id);
+            else
+                _Logger.LogInformation("Найден сотрудник {0}", employee);
+
+            return Task.FromResult(employee);
         }
 
-        public void Add(Employee Employee)
+        public int Add(Employee Employee)
         {
             _Logger.LogInformation("Попытка добавления сотрудника {0}", Employee);
             if (Employee is null)
@@ -64,25 +73,32 @@ namespace WebStore.Services.Products.InMemory
             if (_Employees.Contains(Employee))
             {
                 _Logger.LogWarning("Сотрудник {0} уже существует", Employee);
-                return;
+                return Employee.Id;
             }
+
             Employee.Id = _Employees.Count == 0 ? 1 : _Employees.Max(e => e.Id) + 1;
             _Employees.Add(Employee);
             _Logger.LogInformation("Сотрудник {0} добавлен", Employee);
+
+            return Employee.Id;
         }
 
-        public Task AddAsync(Employee Employee, CancellationToken Cancel = default)
+        public Task<int> AddAsync(Employee Employee, CancellationToken Cancel = default)
         {
             if (Cancel.IsCancellationRequested)
-                return Task.FromCanceled(Cancel);
+                return Task.FromCanceled<int>(Cancel);
 
             if (_Employees.Contains(Employee))
-                return Task.CompletedTask;
+            {
+                _Logger.LogWarning("Сотрудник {0} уже существует", Employee);
+                return Task.FromResult(Employee.Id);
+            }
 
             Employee.Id = _Employees.Count == 0 ? 1 : _Employees.Max(e => e.Id) + 1;
             _Employees.Add(Employee);
+            _Logger.LogInformation("Сотрудник {0} добавлен", Employee);
 
-            return Task.CompletedTask;
+            return Task.FromResult(Employee.Id);
         }
 
         public void Edit(int id, Employee Employee)
@@ -118,11 +134,17 @@ namespace WebStore.Services.Products.InMemory
                 return Task.FromCanceled(Cancel);
 
             if (_Employees.Contains(Employee))
+            {
+                _Logger.LogWarning("Сотрудник {0} уже существует в памяти списка", Employee);
                 return Task.CompletedTask;
+            }
 
             var db_employee = GetById(id);
             if (db_employee is null)
+            {
+                _Logger.LogWarning("Сотрудник {0} не найден", Employee);
                 return Task.CompletedTask;
+            }
 
             db_employee.SurName = Employee.SurName;
             db_employee.FirstName = Employee.FirstName;
@@ -175,6 +197,6 @@ namespace WebStore.Services.Products.InMemory
 
         public void SaveChanges() { }
 
-        public Task SaveChangesAsync(CancellationToken Cancel = default) => Cancel.IsCancellationRequested ? Task.FromCanceled(Cancel) :  Task.CompletedTask;
+        public Task SaveChangesAsync(CancellationToken Cancel = default) => Cancel.IsCancellationRequested ? Task.FromCanceled(Cancel) : Task.CompletedTask;
     }
 }

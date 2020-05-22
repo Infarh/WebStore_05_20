@@ -15,9 +15,9 @@ namespace WebStore.Interfaces.Services
 
         Task<Employee> GetByIdAsync(int id, CancellationToken Cancel = default);
 
-        void Add(Employee Employee);
+        int Add(Employee Employee);
 
-        Task AddAsync(Employee Employee, CancellationToken Cancel = default);
+        Task<int> AddAsync(Employee Employee, CancellationToken Cancel = default);
 
         void Edit(int id, Employee Employee);
 
