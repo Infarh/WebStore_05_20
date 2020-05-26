@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -102,6 +103,73 @@ namespace WebStore.Services.Tests.Products
             var actual_count = cart_view_model.ItemsCount;
 
             Assert.Equal(expected_count, actual_count);
+        }
+
+        [TestMethod]
+        public void CartService_AddToCart_WorkCorrect()
+        {
+            _Cart.Items.Clear();
+
+            const int expected_id = 5;
+
+            _CartService.AddToCart(expected_id);
+
+            Assert.Equal(1, _Cart.ItemsCount);
+
+            Assert.Single(_Cart.Items);
+            Assert.Equal(expected_id, _Cart.Items[0].ProductId);
+        }
+
+        [TestMethod]
+        public void CartService_RemoveFromCart_Remove_Correct_Item()
+        {
+            const int item_id = 1;
+
+            _CartService.RemoveFromCart(item_id);
+
+            Assert.Single(_Cart.Items);
+            Assert.Equal(2, _Cart.Items[0].ProductId);
+        }
+
+        [TestMethod]
+        public void CartService_RemoveAll_ClearCart()
+        {
+            _CartService.RemoveAll();
+
+            Assert.Empty(_Cart.Items);
+        }
+
+        [TestMethod]
+        public void CartService_Decrement_Correct()
+        {
+            const int item_id = 2;
+
+            _CartService.DecrementFromCart(item_id);
+
+            Assert.Equal(3, _Cart.ItemsCount);
+            Assert.Equal(2, _Cart.Items.Count);
+            Assert.Equal(item_id, _Cart.Items[1].ProductId);
+            Assert.Equal(2, _Cart.Items[1].Quantity);
+        }
+
+        [TestMethod]
+        public void CartService_Remove_Item_When_Decrement_to_0()
+        {
+            const int item_id = 1;
+
+            _CartService.DecrementFromCart(item_id);
+
+            Assert.Equal(3, _Cart.ItemsCount);
+            Assert.Single(_Cart.Items);
+        }
+
+        [TestMethod]
+        public void CartService_TransformFromCart_WorkCorrect()
+        {
+            var result = _CartService.TransformFromCart();
+
+            Assert.Equal(4, result.ItemsCount);
+            Assert.Equal(1.1m, result.Items.First().Key.Price);
         }
     }
 }
