@@ -20,7 +20,7 @@ namespace WebStore.Tests.Controllers
     public class CartControllerTests
     {
         [TestMethod]
-        public void CheckOut_ModelState_Invalid_Returns_ViewModel()
+        public async Task CheckOut_ModelState_Invalid_Returns_ViewModel()
         {
             var cart_service_mock = new Mock<ICartService>();
             var order_service = new Mock<IOrderService>();
@@ -31,7 +31,7 @@ namespace WebStore.Tests.Controllers
 
             const string expected_model_name = "Test order";
 
-            var result = controller.CheckOut(
+            var result = await controller.CheckOut(
                 new OrderViewModel { Name = expected_model_name },
                 order_service.Object);
 
