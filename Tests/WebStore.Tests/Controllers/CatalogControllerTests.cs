@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -7,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using WebStore.Controllers;
 using WebStore.Domain.DTO.Products;
+using WebStore.Domain.Entities;
 using WebStore.Domain.ViewModels;
 using WebStore.Interfaces.Services;
 using Assert = Xunit.Assert;
@@ -74,6 +76,71 @@ namespace WebStore.Tests.Controllers
             Assert.Equal(expected_brand_name, model.Brand); 
 
             #endregion
+        }
+
+        [TestMethod]
+        public void Shop_Returns_Correct_View()
+        {
+            var product_data_mock = new Mock<IProductData>();
+            product_data_mock
+               .Setup(p => p.GetProducts(It.IsAny<ProductFilter>()))
+               .Returns<ProductFilter>(filter => new[]
+                {
+                    new ProductDTO
+                    {
+                        Id = 1,
+                        Name = "Product 1",
+                        Order = 0,
+                        Price = 10m,
+                        ImageUrl = "Product1.png",
+                        Brand = new BrandDTO
+                        {
+                            Id = 1,
+                            Name = "Brand of product 1"
+                        } ,
+                        Section = new SectionDTO
+                        {
+                            Id = 1,
+                            Name = "Section of product 1"
+                        }
+                    },
+                    new ProductDTO
+                    {
+                        Id = 2,
+                        Name = "Product 2",
+                        Order = 0,
+                        Price = 20m,
+                        ImageUrl = "Product2.png",
+                        Brand = new BrandDTO
+                        {
+                            Id = 2,
+                            Name = "Brand of product 2"
+                        } ,
+                        Section = new SectionDTO
+                        {
+                            Id = 2,
+                            Name = "Section of product 2"
+                        }
+                    },
+                });
+
+            var logger_mock = new Mock<ILogger<CatalogController>>();
+
+            var controller = new CatalogController(product_data_mock.Object, logger_mock.Object);
+
+            const int expected_section_id = 1;
+            const int expected_brand_id = 5;
+
+            var result = controller.Shop(expected_section_id, expected_brand_id);
+
+            var view_result = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<CatalogViewModel>(view_result.ViewData.Model);
+
+            Assert.Equal(2, model.Products.Count());
+            Assert.Equal(expected_section_id, model.SectionId);
+            Assert.Equal(expected_brand_id, model.BrandId);
+
+            Assert.Equal("Brand of product 1", model.Products.First().Brand);
         }
     }
 }
