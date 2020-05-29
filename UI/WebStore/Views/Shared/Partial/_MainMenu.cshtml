@@ -2,13 +2,13 @@
     <ul class="nav navbar-nav collapse navbar-collapse">
         <li><a asp-controller="Home" asp-action="Index" class="active">Главная</a></li>
         <li class="dropdown">
-            <a is-active-route asp-controller="Catalog" asp-action="Shop">Магазин<i class="fa fa-angle-down"></i></a>
+            <a is-active-route ignore-action asp-controller="Catalog" asp-action="Shop">Магазин<i class="fa fa-angle-down"></i></a>
             <ul role="menu" class="sub-menu">
                 <li><a is-active-route asp-controller="Catalog" asp-action="Shop">Каталог товаров</a></li>
             </ul>
         </li>
         <li class="dropdown">
-            <a is-active-route asp-controller="Blogs" asp-action="Index">Блоги<i class="fa fa-angle-down"></i></a>
+            <a is-active-route ignore-action asp-controller="Blogs" asp-action="Index">Блоги<i class="fa fa-angle-down"></i></a>
             <ul role="menu" class="sub-menu">
                 <li><a is-active-route asp-controller="Blogs" asp-action="Index">Список блогов</a></li>
                 <li><a is-active-route asp-controller="Blogs" asp-action="BlogSingle">Блог магазина</a></li>
