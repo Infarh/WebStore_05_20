@@ -12,7 +12,7 @@ namespace WebStore.Components
         private readonly IProductData _ProductData;
         public SectionsViewComponent(IProductData ProductData) => _ProductData = ProductData;
 
-        public IViewComponentResult Invoke() => View(GetSections());
+        public IViewComponentResult Invoke(string SectionId) => View(GetSections());
 
         //public async Task<IViewComponentResult> InvokeAsync()
         //{
