@@ -10,6 +10,9 @@ namespace WebStore.Components
         public BreadCrumbsViewComponent(IProductData ProductData) => _ProductData = ProductData;
 
 
-        public IViewComponentResult Invoke() => View();
+        public IViewComponentResult Invoke()
+        {
+            return View();
+        }
     }
 }
