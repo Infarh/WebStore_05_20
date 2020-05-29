@@ -9,11 +9,15 @@ namespace WebStore.Interfaces.Services
     {
         /// <summary>Получить все секции</summary>
         /// <returns>Перечисление секций каталога</returns>
-        IEnumerable<Section> GetSections();
+        IEnumerable<SectionDTO> GetSections();
+
+        SectionDTO GetSectionById(int id);
 
         /// <summary>Получить все бренды</summary>
         /// <returns>Перечисление брендов каталога</returns>
-        IEnumerable<Brand> GetBrands();
+        IEnumerable<BrandDTO> GetBrands();
+
+        BrandDTO GetBrandById(int id);
 
         /// <summary>Товары из каталога</summary>
         /// <param name="Filter">Критерий поиска/фильтрации</param>
