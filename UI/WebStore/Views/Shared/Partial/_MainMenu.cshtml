@@ -15,8 +15,17 @@
             </ul>
         </li>
         <li><a asp-controller="Home" asp-action="Error404">404</a></li>
-        <li><a asp-controller="Home" asp-action="ContactUs">Контакты</a></li>
-        <li><a asp-controller="Employees" asp-action="Index">Сотрудники</a></li>
-        <li><a asp-controller="WebAPITest" asp-action="Index">WebAPI</a></li>
+        <li><a is-active-route asp-controller="Home" asp-action="ContactUs">Контакты</a></li>
+        <li><a asp-controller="Employees" asp-action="Index" class="@IsActive("Employees", "Index")">Сотрудники</a></li>
+        <li><a asp-controller="WebAPITest" asp-action="Index" class="@IsActive("WebAPITest", "Index")">WebAPI</a></li>
     </ul>
 </div>
+
+@functions
+{
+    string IsActive(string Controller, string Action) =>
+        Equals(Controller, ViewContext.RouteData.Values["Controller"])
+        && Equals(Action, ViewContext.RouteData.Values["Action"])
+            ? "active"
+            : null;
+}
