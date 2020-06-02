@@ -19,7 +19,9 @@
     $(function () {
         Cart.init({
             getCartViewLink: "@Url.Action("GetCartView", "Cart")",
-            addToCartLink: "@Url.Action("AddToCartAPI", "Cart")"
+            addToCartLink: "@Url.Action("AddToCartAPI", "Cart")",
+            decrementLink: "@Url.Action("DecrementFromCartAPI", "Cart")",
+            removeFromCartLink: "@Url.Action("RemoveFromCartAPI", "Cart")"
         });
     })
 </script>
