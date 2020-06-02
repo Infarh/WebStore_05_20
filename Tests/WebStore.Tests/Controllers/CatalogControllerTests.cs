@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -54,8 +55,12 @@ namespace WebStore.Tests.Controllers
                });
 
             var logger_mock = new Mock<ILogger<CatalogController>>();
+            var configuration_mock = new Mock<IConfiguration>();
 
-            var controller = new CatalogController(product_data_mock.Object, logger_mock.Object);
+            var controller = new CatalogController(
+                product_data_mock.Object, 
+                logger_mock.Object, 
+                configuration_mock.Object);
 
             #endregion
 
@@ -84,49 +89,57 @@ namespace WebStore.Tests.Controllers
             var product_data_mock = new Mock<IProductData>();
             product_data_mock
                .Setup(p => p.GetProducts(It.IsAny<ProductFilter>()))
-               .Returns<ProductFilter>(filter => new[]
+               .Returns<ProductFilter>(filter => new PageProductsDTO
                 {
-                    new ProductDTO
+                    TotalCount = 2,
+                    Products = new[]
                     {
-                        Id = 1,
-                        Name = "Product 1",
-                        Order = 0,
-                        Price = 10m,
-                        ImageUrl = "Product1.png",
-                        Brand = new BrandDTO
+                        new ProductDTO
                         {
                             Id = 1,
-                            Name = "Brand of product 1"
-                        } ,
-                        Section = new SectionDTO
-                        {
-                            Id = 1,
-                            Name = "Section of product 1"
-                        }
-                    },
-                    new ProductDTO
-                    {
-                        Id = 2,
-                        Name = "Product 2",
-                        Order = 0,
-                        Price = 20m,
-                        ImageUrl = "Product2.png",
-                        Brand = new BrandDTO
-                        {
-                            Id = 2,
-                            Name = "Brand of product 2"
-                        } ,
-                        Section = new SectionDTO
+                            Name = "Product 1",
+                            Order = 0,
+                            Price = 10m,
+                            ImageUrl = "Product1.png",
+                            Brand = new BrandDTO
+                            {
+                                Id = 1,
+                                Name = "Brand of product 1"
+                            } ,
+                            Section = new SectionDTO
+                            {
+                                Id = 1,
+                                Name = "Section of product 1"
+                            }
+                        },
+                        new ProductDTO
                         {
                             Id = 2,
-                            Name = "Section of product 2"
-                        }
-                    },
-                });
+                            Name = "Product 2",
+                            Order = 0,
+                            Price = 20m,
+                            ImageUrl = "Product2.png",
+                            Brand = new BrandDTO
+                            {
+                                Id = 2,
+                                Name = "Brand of product 2"
+                            } ,
+                            Section = new SectionDTO
+                            {
+                                Id = 2,
+                                Name = "Section of product 2"
+                            }
+                        },
+                    }
+               });
 
             var logger_mock = new Mock<ILogger<CatalogController>>();
+            var configuration_mock = new Mock<IConfiguration>();
 
-            var controller = new CatalogController(product_data_mock.Object, logger_mock.Object);
+            var controller = new CatalogController(
+                product_data_mock.Object, 
+                logger_mock.Object, 
+                configuration_mock.Object);
 
             const int expected_section_id = 1;
             const int expected_brand_id = 5;

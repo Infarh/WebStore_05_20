@@ -341,5 +341,8 @@ ASALocalRun/
 healthchecksdb
 /Services/WebStore.ServiceHosting/WebStore.ServiceHosting.xml
 /Common/WebStore.Domain/WebStore.Domain.xml
-/UI/WebStore/wwwroot/js
-/UI/WebStore/wwwroot/css
+/UI/WebStore/wwwroot/js/site.min.js.gz
+/UI/WebStore/wwwroot/js/site.min.js
+/UI/WebStore/wwwroot/js/site.js
+/UI/WebStore/wwwroot/css/site.min.css
+/UI/WebStore/wwwroot/css/site.css

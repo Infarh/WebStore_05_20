@@ -39,29 +39,33 @@ namespace WebStore.Services.Tests.Products
             _ProductDataMock = new Mock<IProductData>();
             _ProductDataMock
                .Setup(c => c.GetProducts(It.IsAny<ProductFilter>()))
-               .Returns(new List<ProductDTO>
+               .Returns(new PageProductsDTO
                 {
-                    new ProductDTO
+                    Products = new List<ProductDTO>
                     {
-                        Id = 1,
-                        Name = "Product 1",
-                        Price = 1.1m,
-                        Order = 0,
-                        ImageUrl = "Product1.png",
-                        Brand = new BrandDTO { Id = 1, Name = "Brand 1" },
-                        Section = new SectionDTO { Id = 1, Name = "Section 1"}
+                        new ProductDTO
+                        {
+                            Id = 1,
+                            Name = "Product 1",
+                            Price = 1.1m,
+                            Order = 0,
+                            ImageUrl = "Product1.png",
+                            Brand = new BrandDTO { Id = 1, Name = "Brand 1" },
+                            Section = new SectionDTO { Id = 1, Name = "Section 1"}
+                        },
+                        new ProductDTO
+                        {
+                            Id = 2,
+                            Name = "Product 2",
+                            Price = 2.2m,
+                            Order = 0,
+                            ImageUrl = "Product2.png",
+                            Brand = new BrandDTO { Id = 2, Name = "Brand 2" },
+                            Section = new SectionDTO { Id = 2, Name = "Section 2"}
+                        },
                     },
-                    new ProductDTO
-                    {
-                        Id = 2,
-                        Name = "Product 2",
-                        Price = 2.2m,
-                        Order = 0,
-                        ImageUrl = "Product2.png",
-                        Brand = new BrandDTO { Id = 2, Name = "Brand 2" },
-                        Section = new SectionDTO { Id = 2, Name = "Section 2"}
-                    },
-                });
+                    TotalCount = 2
+               });
 
             _CartStoreMock = new Mock<ICartStore>();
             _CartStoreMock.Setup(c => c.Cart).Returns(_Cart);

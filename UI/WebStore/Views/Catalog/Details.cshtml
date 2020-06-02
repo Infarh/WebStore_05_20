@@ -19,7 +19,7 @@
                     <!--product-details-->
                     <div class="col-sm-5">
                         <div class="view-product">
-                            <img src="~/images/product-details/1.jpg" alt="" />
+                            <img src="~/images/product-details/@Model.ImageUrl" alt="" />
                             <h3>ZOOM</h3>
                         </div>
                         <div id="similar-product" class="carousel slide" data-ride="carousel">
@@ -65,10 +65,10 @@
                                 <span>@Model.Price.ToString("C")</span>
                                 <label>Количество:</label>
                                 <input type="text" value="3" />
-                                <button type="button" class="btn btn-default cart">
+                                <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id" data-id="@Model.Id" class="btn btn-default cart add-to-cart">
                                     <i class="fa fa-shopping-cart"></i>
                                     Добавить в корзину
-                                </button>
+                                </a>
                             </span>
                             <p><b>Availability:</b> In Stock</p>
                             <p><b>Condition:</b> New</p>

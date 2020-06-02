@@ -14,7 +14,7 @@ namespace WebStore.Areas.Admin.Controllers
 
         public ProductsController(IProductData ProductData) => _ProductData = ProductData;
 
-        public IActionResult Index(/*[FromServices] IProductData Products*/) => View(_ProductData.GetProducts().FromDTO());
+        public IActionResult Index(/*[FromServices] IProductData Products*/) => View(_ProductData.GetProducts().Products.FromDTO());
 
         public IActionResult Edit(int? id)
         {
