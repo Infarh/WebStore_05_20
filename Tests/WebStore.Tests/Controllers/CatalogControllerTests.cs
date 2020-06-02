@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -54,8 +55,12 @@ namespace WebStore.Tests.Controllers
                });
 
             var logger_mock = new Mock<ILogger<CatalogController>>();
+            var configuration_mock = new Mock<IConfiguration>();
 
-            var controller = new CatalogController(product_data_mock.Object, logger_mock.Object);
+            var controller = new CatalogController(
+                product_data_mock.Object, 
+                logger_mock.Object, 
+                configuration_mock.Object);
 
             #endregion
 
@@ -129,8 +134,12 @@ namespace WebStore.Tests.Controllers
                });
 
             var logger_mock = new Mock<ILogger<CatalogController>>();
+            var configuration_mock = new Mock<IConfiguration>();
 
-            var controller = new CatalogController(product_data_mock.Object, logger_mock.Object);
+            var controller = new CatalogController(
+                product_data_mock.Object, 
+                logger_mock.Object, 
+                configuration_mock.Object);
 
             const int expected_section_id = 1;
             const int expected_brand_id = 5;
