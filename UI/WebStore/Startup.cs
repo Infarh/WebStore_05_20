@@ -2,7 +2,6 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,13 +11,12 @@ using WebStore.Clients.Identity;
 using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
-using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Hubs;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
 using WebStore.Logger;
-using WebStore.Services.Data;
 using WebStore.Services.Products;
 using WebStore.Services.Products.InCookies;
 
@@ -32,6 +30,8 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
             services.AddIdentity<User, Role>()
                .AddDefaultTokenProviders();
 
@@ -83,6 +83,7 @@ namespace WebStore
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddRazorPages();
 
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
@@ -101,9 +102,11 @@ namespace WebStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
                 app.UseBrowserLink();
             }
 
+            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseDefaultFiles();
 
@@ -116,6 +119,11 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<InformationHub>("/info");
+
+                endpoints.MapRazorPages();
+                endpoints.MapFallbackToFile("blazor.html");
+
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

@@ -33,6 +33,37 @@
     {
       "library": "prettyPhoto@3.1.6",
       "destination": "wwwroot/lib/prettyPhoto/"
+    },
+    {
+      "library": "jquery-loading-overlay@2.1.7",
+      "destination": "wwwroot/lib/jquery-loading-overlay/"
+    },
+    {
+      "library": "jquery-validate@1.19.2",
+      "destination": "wwwroot/lib/jquery-validate/",
+      "files": [
+        "jquery.validate.min.js",
+        "localization/messages_ru.min.js"
+      ]
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
+    {
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/lib/jquery-ajax-unobtrusive/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@aspnet/signalr@1.1.4",
+      "destination": "wwwroot/lib/signalr/",
+      "files": [
+        "dist/browser/signalr.js",
+        "dist/browser/signalr.js.map",
+        "dist/browser/signalr.min.js",
+        "dist/browser/signalr.min.js.map"
+      ]
     }
   ]
 }
