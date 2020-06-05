@@ -83,6 +83,7 @@ namespace WebStore
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddRazorPages();
 
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
@@ -101,9 +102,11 @@ namespace WebStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
                 app.UseBrowserLink();
             }
 
+            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseDefaultFiles();
 
@@ -117,6 +120,9 @@ namespace WebStore
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<InformationHub>("/info");
+
+                endpoints.MapRazorPages();
+                endpoints.MapFallbackToFile("blazor.html");
 
                 endpoints.MapControllerRoute(
                     name: "areas",
