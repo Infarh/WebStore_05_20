@@ -17,6 +17,10 @@
         $(".cart_quantity_up").click(Cart.incrementItem);
         $(".cart_quantity_down").click(Cart.decrementItem);
         $(".cart_quantity_delete").click(Cart.removeFromCart);
+
+        $("body").on("DOMSubtreeModified", "#catalog-items-container", function () {
+            $(".add-to-cart").click(Cart.addToCart);
+        });
     },
 
     addToCart: function (event) {
